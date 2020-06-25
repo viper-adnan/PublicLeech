@@ -10,14 +10,25 @@ logging.basicConfig(
 )
 logging.getLogger("pyrogram").setLevel(logging.WARNING)
 LOGGER = logging.getLogger(__name__)
-
+import os
 import pyrogram
 
 
 from tobrot import (
     AUTH_CHANNEL
 )
+help_msg = """
+For Direct or YouTube links use /ytdl replying to the link.
 
+For Torrent/Magnet Link use /leech replying to Magnet or Torrent.
+
+To get the status of downloads use /status
+
+To Upload in tar.gz fromat use /leech archive
+
+To set your custom Thumbnail which is used for uploading files or video use /savethumbnail replying to an image.
+
+To delete your custom Thumbnail use /clearthumbnail"""
 
 async def new_join_f(client, message):
     chat_type = message.chat.type
@@ -33,13 +44,10 @@ async def new_join_f(client, message):
 
 
 async def help_message_f(client, message):
-    # await message.reply_text("no one gonna help you 🤣🤣🤣🤣", quote=True)
-    channel_id = str(AUTH_CHANNEL)[4:]
-    message_id = 99
-    # display the /help message
     await message.reply_text(
-        f"please read the <a href='https://t.me/c/{channel_id}/{message_id}'>Pinned Message</a>",
-        quote=True
+        os.environ.get("HELP_MSG", help_msg),
+        quote=True,
+        parse_mode="markdown",
     )
 
 
@@ -47,13 +55,13 @@ async def rename_message_f(client, message):
     inline_keyboard = []
     inline_keyboard.append([
         pyrogram.InlineKeyboardButton(
-            text="read this?",
-            url="https://t.me/keralagram/698909"
+            text="Here You Go",
+            url="https://t.me/renamebot"
         )
     ])
     reply_markup = pyrogram.InlineKeyboardMarkup(inline_keyboard)
     await message.reply_text(
-        "please use @renamebot",
+        "Please use @renamebot",
         quote=True,
         reply_markup=reply_markup
     )
